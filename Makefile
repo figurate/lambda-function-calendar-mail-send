@@ -1,12 +1,14 @@
 SHELL:=/bin/bash
 REGISTRY?=figurate
-IMAGE_NAME=lambda-function-python-template
+IMAGE_NAME=lambda-function-calendar-mail-send
 TAGS?=latest
 BUILD_ARGS?=
 PYTHON_VERSION=3.8
 AWS_DEFAULT_REGION?=ap-southeast-2
 
-.PHONY: all build tag push
+DIAGRAMS=docker run -v "${PWD}:/work" figurate/diagrams python
+
+.PHONY: all build tag push diagram
 
 all: build
 
@@ -27,3 +29,6 @@ push:
 
 run:
 	docker run --rm -it -p 9000:8080 -e AWS_REGION=$(AWS_DEFAULT_REGION) $(REGISTRY)/$(IMAGE_NAME)
+
+diagram:
+	$(DIAGRAMS) diagram.py
